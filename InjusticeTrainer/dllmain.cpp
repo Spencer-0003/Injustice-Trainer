@@ -18,15 +18,15 @@ DWORD WINAPI MainThread(HMODULE hMod)
     const char* info =
         "WARNING: Enabling features while not in a match will crash you!!!\n\n"
         "Hotkeys:\n"
-        "Refill shield - Insert\n"
-        "Refill health - Home\n"
-        "Refill Ability Bar - Delete\n"
-        "Kill Player Two - End";
+        "Refill shield - Numpad 1\n"
+        "Refill health - Numpad 2\n"
+        "Refill ability bar - Numpad 3\n"
+        "Kill player two - Numpad 4\n"
+        "Exit cheat - End";
 
     // Create console
     AllocConsole();
     FILE* f;
-    freopen_s(&f, "CONIN$", "r", stdin);
     freopen_s(&f, "CONOUT$", "w", stdout);
 
     SetConsoleTitle(L"Injustice Trainer by Spencer-0003");
@@ -34,27 +34,32 @@ DWORD WINAPI MainThread(HMODULE hMod)
     std::cout << info;
 
     // Get base
-    uintptr_t base = reinterpret_cast<uintptr_t>(GetModuleHandle(L"Injustice.exe"));
+    //uintptr_t base = reinterpret_cast<uintptr_t>(GetModuleHandle(L"Injustice.exe"));
+    uintptr_t base = reinterpret_cast<uintptr_t>(GetModuleHandle(NULL));
 
     // Main loop
     while (true)
     {
-        if (GetAsyncKeyState(VK_INSERT) && 0x1)
+        if (GetAsyncKeyState(VK_END) && 0x1) // Exit cheat
+        {
+            break;
+        }
+        else if (GetAsyncKeyState(VK_NUMPAD1) && 0x1) // Refill shield
         {
             uintptr_t shield = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneShield });
             *(float*)(shield) = 1;
         }
-        else if (GetAsyncKeyState(VK_HOME) && 0x1)
+        else if (GetAsyncKeyState(VK_NUMPAD2) && 0x1) // Refill health
         {
             uintptr_t health = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneHealth });
             *(float*)(health) = 1;
         }
-        else if (GetAsyncKeyState(VK_DELETE) && 0x1)
+        else if (GetAsyncKeyState(VK_NUMPAD3) && 0x1) // Refill ability bar
         {
             uintptr_t ability = mem::FindDMAAddy(base + playerOneAbilityBar, { playerOneAbility });
             *(float*)(ability) = 1;
         }
-        else if (GetAsyncKeyState(VK_END) && 0x1)
+        else if (GetAsyncKeyState(VK_NUMPAD4) && 0x1) // Kill player two
         {
             uintptr_t shield = mem::FindDMAAddy(base + playerTwoHealthBar, { playerTwoShield });
             uintptr_t health = mem::FindDMAAddy(base + playerTwoHealthBar, { playerTwoHealth });
@@ -64,10 +69,14 @@ DWORD WINAPI MainThread(HMODULE hMod)
         };
     };
 
+    fclose(f);
+    FreeConsole();
+    FreeLibraryAndExitThread(hMod, 0);
+
     return 0;
 }
 
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
     switch (ul_reason_for_call)
     {
