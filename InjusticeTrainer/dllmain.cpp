@@ -43,13 +43,13 @@ DWORD WINAPI MainThread(HMODULE hMod)
             {
                 uintptr_t shield = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneShield });
                 float* _shield = (float*)shield;
-                *_shield = 1; // Just a really big number to make sure it's full.
+                *_shield = 1;
             }
             else if (GetAsyncKeyState(VK_HOME))
             {
                 uintptr_t health = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneHealth });
                 float* _health = (float*)health;
-                *_health = 1; // Just a really big number to make sure it's full. x2
+                *_health = 1;
             }
             else if (GetAsyncKeyState(VK_DELETE))
             {
