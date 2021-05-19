@@ -34,41 +34,33 @@ DWORD WINAPI MainThread(HMODULE hMod)
     std::cout << info;
 
     // Get base
-    uintptr_t base = (uintptr_t)GetModuleHandle(L"Injustice.exe");
+    uintptr_t base = reinterpret_cast<uintptr_t>(GetModuleHandle(L"Injustice.exe"));
 
     // Main loop
     while (true)
     {
-        if (1) {
-            if (GetAsyncKeyState(VK_INSERT))
-            {
-                uintptr_t shield = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneShield });
-                float* _shield = (float*)shield;
-                *_shield = 1;
-            }
-            else if (GetAsyncKeyState(VK_HOME))
-            {
-                uintptr_t health = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneHealth });
-                float* _health = (float*)health;
-                *_health = 1;
-            }
-            else if (GetAsyncKeyState(VK_DELETE))
-            {
-                uintptr_t ability = mem::FindDMAAddy(base + playerOneAbilityBar, { playerOneAbility });
-                float* _ability = (float*)ability;
-                *_ability = 1;
-            }
-            else if (GetAsyncKeyState(VK_END))
-            {
-                uintptr_t shield = mem::FindDMAAddy(base + playerTwoHealthBar, { playerTwoShield });
-                uintptr_t health = mem::FindDMAAddy(base + playerTwoHealthBar, { playerTwoHealth });
+        if (GetAsyncKeyState(VK_INSERT))
+        {
+            uintptr_t shield = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneShield });
+            *(float*)(shield) = 1;
+        }
+        else if (GetAsyncKeyState(VK_HOME) && 0x1)
+        {
+            uintptr_t health = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneHealth });
+            *(float*)(health) = 1;
+        }
+        else if (GetAsyncKeyState(VK_DELETE) && 0x1)
+        {
+            uintptr_t ability = mem::FindDMAAddy(base + playerOneAbilityBar, { playerOneAbility });
+            *(float*)(ability) = 1;
+        }
+        else if (GetAsyncKeyState(VK_END) && 0x1)
+        {
+            uintptr_t shield = mem::FindDMAAddy(base + playerTwoHealthBar, { playerTwoShield });
+            uintptr_t health = mem::FindDMAAddy(base + playerTwoHealthBar, { playerTwoHealth });
 
-                float* _shield = (float*)shield;
-                float* _health = (float*)health;
-
-                *_shield = 0;
-                *_health = 0;
-            };
+            *(float*)(shield) = 0;
+            *(float*)(health) = 0;
         };
     };
 
