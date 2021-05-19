@@ -20,7 +20,8 @@ DWORD WINAPI MainThread(HMODULE hMod)
         "Hotkeys:\n"
         "Refill shield - Insert\n"
         "Refill health - Home\n"
-        "Refill Ability Bar - Delete";
+        "Refill Ability Bar - Delete\n"
+        "Kill Player Two - End";
 
     // Create console
     AllocConsole();
@@ -56,6 +57,17 @@ DWORD WINAPI MainThread(HMODULE hMod)
                 uintptr_t ability = mem::FindDMAAddy(base + playerOneAbilityBar, { playerOneAbility });
                 float* _ability = (float*)ability;
                 *_ability = 1;
+            }
+            else if (GetAsyncKeyState(VK_END))
+            {
+                uintptr_t shield = mem::FindDMAAddy(base + playerTwoHealthBar, { playerTwoShield });
+                uintptr_t health = mem::FindDMAAddy(base + playerTwoHealthBar, { playerTwoHealth });
+
+                float* _shield = (float*)shield;
+                float* _health = (float*)health;
+
+                *_shield = 0;
+                *_health = 0;
             };
         };
     };
