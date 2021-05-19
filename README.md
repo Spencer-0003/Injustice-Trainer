@@ -15,3 +15,4 @@ Exit Cheat: End
 ## Known Bugs:
 Bug: You will crash if you enable features before you start a match. <br/>
 Solution: This will be fixed after I have finished implementing features.
+Fixed: 19/05/21 - Version 0.5

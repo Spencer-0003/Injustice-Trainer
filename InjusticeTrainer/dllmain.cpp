@@ -16,7 +16,6 @@ DWORD WINAPI MainThread(HMODULE hMod)
 {
     // Info text for console
     const char* info =
-        "WARNING: Enabling features while not in a match will crash you!!!\n\n"
         "Hotkeys:\n"
         "Refill shield - Numpad 1\n"
         "Refill health - Numpad 2\n"
@@ -47,31 +46,38 @@ DWORD WINAPI MainThread(HMODULE hMod)
         else if (GetAsyncKeyState(VK_NUMPAD1) && 0x1) // Refill shield
         {
             uintptr_t shield = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneShield });
+            if (shield == 900) continue;
+
             *(float*)(shield) = 1;
         }
         else if (GetAsyncKeyState(VK_NUMPAD2) && 0x1) // Refill health
         {
             uintptr_t health = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneHealth });
+            if (health == 904) continue;
+
             *(float*)(health) = 1;
         }
         else if (GetAsyncKeyState(VK_NUMPAD3) && 0x1) // Refill ability bar
         {
             uintptr_t ability = mem::FindDMAAddy(base + playerOneAbilityBar, { playerOneAbility });
+            if (ability == 752) continue;
+
             *(float*)(ability) = 1;
         }
         else if (GetAsyncKeyState(VK_NUMPAD4) && 0x1) // Kill player two
         {
             uintptr_t shield = mem::FindDMAAddy(base + playerTwoHealthBar, { playerTwoShield });
             uintptr_t health = mem::FindDMAAddy(base + playerTwoHealthBar, { playerTwoHealth });
+            if (shield == 900) continue;
 
             *(float*)(shield) = 0;
             *(float*)(health) = 0;
         };
     };
 
-    fclose(f);
+    /*if (f != 0) fclose(f); // Looks bad but it fixes a warning in VS
     FreeConsole();
-    FreeLibraryAndExitThread(hMod, 0);
+    FreeLibraryAndExitThread(hMod, 0);*/
 
     return 0;
 }
