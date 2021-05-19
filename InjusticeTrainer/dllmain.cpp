@@ -7,9 +7,10 @@
 
 #include <Windows.h>
 #include "mem.h"
+#include "offsets.h"
+
 #include <cstdio>
 #include <iostream>
-#include <string> 
 
 DWORD WINAPI MainThread(HMODULE hMod)
 {
@@ -39,20 +40,20 @@ DWORD WINAPI MainThread(HMODULE hMod)
         if (1) {
             if (GetAsyncKeyState(VK_INSERT))
             {
-                uintptr_t shield = mem::FindDMAAddy(base + 0x030CFE1C, { 0x384 });
-                int* _shield = (int*)shield;
+                uintptr_t shield = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneShield });
+                double* _shield = (double*)shield;
                 *_shield = 10e16; // Just a really big number to make sure it's full.
             }
             else if (GetAsyncKeyState(VK_HOME))
             {
-                uintptr_t health = mem::FindDMAAddy(base + 0x030CFE1C, { 0x388 });
-                int* _health = (int*)health;
+                uintptr_t health = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneHealth });
+                double* _health = (double*)health;
                 *_health = 10e16; // Just a really big number to make sure it's full. x2
             };
         };
     };
 
-    return 1;
+    return 0;
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
