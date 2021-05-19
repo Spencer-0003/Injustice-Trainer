@@ -8,7 +8,8 @@ Buy the game here: https://store.steampowered.com/app/242700/Injustice_Gods_Amon
 ## Features:
 Refill Health: Insert <br/>
 Refill Shield: Home <br/>
-Refill Ability Bar: Delete
+Refill Ability Bar: Delete <br/>
+Kill Player Two: End
 
 ## Known Bugs:
 Bug: You will crash if you enable features before you start a match. <br/>
