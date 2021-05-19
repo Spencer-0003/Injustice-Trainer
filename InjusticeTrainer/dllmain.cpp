@@ -19,7 +19,8 @@ DWORD WINAPI MainThread(HMODULE hMod)
         "WARNING: Enabling features while not in a match will crash you!!!\n\n"
         "Hotkeys:\n"
         "Refill shield - Insert\n"
-        "Refill health - Home";
+        "Refill health - Home\n"
+        "Refill Ability Bar - Delete";
 
     // Create console
     AllocConsole();
@@ -41,14 +42,20 @@ DWORD WINAPI MainThread(HMODULE hMod)
             if (GetAsyncKeyState(VK_INSERT))
             {
                 uintptr_t shield = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneShield });
-                double* _shield = (double*)shield;
-                *_shield = 10e16; // Just a really big number to make sure it's full.
+                float* _shield = (float*)shield;
+                *_shield = 1; // Just a really big number to make sure it's full.
             }
             else if (GetAsyncKeyState(VK_HOME))
             {
                 uintptr_t health = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneHealth });
-                double* _health = (double*)health;
-                *_health = 10e16; // Just a really big number to make sure it's full. x2
+                float* _health = (float*)health;
+                *_health = 1; // Just a really big number to make sure it's full. x2
+            }
+            else if (GetAsyncKeyState(VK_DELETE))
+            {
+                uintptr_t ability = mem::FindDMAAddy(base + playerOneAbilityBar, { playerOneAbility });
+                float* _ability = (float*)ability;
+                *_ability = 1;
             };
         };
     };
