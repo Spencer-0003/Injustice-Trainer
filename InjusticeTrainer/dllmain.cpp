@@ -39,7 +39,7 @@ DWORD WINAPI MainThread(HMODULE hMod)
     // Main loop
     while (true)
     {
-        if (GetAsyncKeyState(VK_INSERT))
+        if (GetAsyncKeyState(VK_INSERT) && 0x1)
         {
             uintptr_t shield = mem::FindDMAAddy(base + playerOneHealthBar, { playerOneShield });
             *(float*)(shield) = 1;
